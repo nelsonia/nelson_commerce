@@ -47,17 +47,35 @@
         </div>
         <hr>
         <h3>Order summary</h3>
+        {% for item in items %}
         <div class="cart-row">
-            <div style="flex: 2;"><img class="row-image" src="{% static 'images/placeholder.png' %}"> </div>
-            <div style="flex: 2;"> product1</div>
-            <div style="flex: 1;">$20</div>
-            <div style="flex: 1;">x2</div>
+            <div style="flex: 2;"><img class="row-image" src="{{item.product.imageURL}}"> </div>
+            <div style="flex: 2;">{{item.product.name}}</div>
+            <div style="flex: 1;">KSH{{item.product.price|floatformat:2}}</div>
+            <div style="flex: 1;">{{item.quantity}}</div>
 
-        </div> 
-        <h5>Items: 2</h5>
-        <h5>Total: $40</h5>
+        </div>
+        {% endfor %}
+        <h5>Items: {{order.get_cart_items}}</h5>
+        <h5>Total: KSH {{order.get_cart_total|floatformat:2}}</h5>
 
     </div>
 </div>
+<script type="text/javascript">
+    var shipping = '{{order.shipping}}'
+    if (shipping == 'False') {
+        document.getElementById('shipping-info').innerHTML = ''
+    }
+
+    var form = document.getElementById('form')
+    form.addEventListener('submit', function(e)
+    {
+        e.preventDefault()
+        console.log('Form submitted...')
+        document.getElementById('form-button').classList.add("hidden");
+        document.getElementById('payment-info').classList.remove("hidden");
+    })
+
+</script>
 
 {% endblock content %}
